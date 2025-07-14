@@ -4,10 +4,14 @@ using Quartile.Domain.Enums;
 
 namespace Quartile.Application.Features.Company.Validators
 {
-    public class CreateCompanyCommandValidator : AbstractValidator<CreateCompanyCommand>
+    public class UpdateCompanyCommandValidator : AbstractValidator<UpdateCompanyCommand>
     {
-        public CreateCompanyCommandValidator()
+        public UpdateCompanyCommandValidator()
         {
+            RuleFor(x => x.Id)
+                .NotEmpty()
+                .WithMessage("Id is required");
+
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("Name is required")

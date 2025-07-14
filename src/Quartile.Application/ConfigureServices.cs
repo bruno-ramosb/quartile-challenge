@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Quartile.Application.Common.Behaviors;
 
 namespace Quartile.Application
 {
@@ -12,7 +14,8 @@ namespace Quartile.Application
 
             return services
                 .AddValidatorsFromAssembly(assembly)
-                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly));
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         }
     }
 }

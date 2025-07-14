@@ -57,13 +57,13 @@ namespace Quartile.Application.Common.Response
         public bool Success { get; private set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public string Message { get; private set; }
+        public string? Message { get; private set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public T Data { get; private set; }
+        public T? Data { get; private set; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
-        public List<string> Notifications { get; private set; }
+        public List<string>? Notifications { get; private set; }
 
         [JsonIgnore]
         public HttpStatusCode StatusCode { get; private set; }

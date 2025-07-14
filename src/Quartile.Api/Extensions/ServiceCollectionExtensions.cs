@@ -29,7 +29,8 @@ namespace Quartile.Api.Extensions
 
         internal static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            return services;
+            return services
+                .AddScoped<ICompanyRepository, CompanyRepository>();
         }
 
         internal static IServiceCollection AddInfrastructure(this IServiceCollection services)

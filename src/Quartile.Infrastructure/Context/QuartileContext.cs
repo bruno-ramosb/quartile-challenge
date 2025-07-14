@@ -1,10 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Quartile.Domain.Entities;
 using Quartile.Domain.Interfaces.Entities;
 
 namespace Quartile.Infrastructure.Context
 {
     public class QuartileContext : DbContext
     {
+        public DbSet<Company> Companies { get; set; }
+
         public QuartileContext(DbContextOptions<QuartileContext> options) : base(options)
         {
         }
