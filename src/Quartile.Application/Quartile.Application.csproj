@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Quartile.Domain\Quartile.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Features\Company\Commands\Query\" />
+    <Folder Include="Features\Company\Handlers\Query\" />
+    <Folder Include="Features\Company\Responses\Query\" />
+    <Folder Include="Features\Company\Validators\Query\" />
+    <Folder Include="Features\Store\Commands\Query\" />
+    <Folder Include="Features\Store\Handlers\Query\" />
+    <Folder Include="Features\Store\Responses\Query\" />
+    <Folder Include="Features\Store\Validators\Query\" />
+  </ItemGroup>
+
+</Project>
