@@ -7,6 +7,7 @@ namespace Quartile.Infrastructure.Context
     public class QuartileContext : DbContext
     {
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Store> Stores { get; set; }
 
         public QuartileContext(DbContextOptions<QuartileContext> options) : base(options)
         {

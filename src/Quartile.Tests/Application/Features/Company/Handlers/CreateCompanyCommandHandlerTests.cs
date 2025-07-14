@@ -36,7 +36,7 @@ namespace Quartile.Tests.Application.Features.Company.Handlers
                 "12345678901234",
                 DocumentType.CNPJ);
 
-            _companyRepository.GetByDocumentNumberAsync(command.DocumentNumber).Returns((Company?)null);
+            _companyRepository.GetByDocumentNumberAsync(command.DocumentNumber).Returns((Quartile.Domain.Entities.Company?)null);
             _unitOfWork.CommitAsync(Arg.Any<CancellationToken>()).Returns(1);
 
             // Act
@@ -51,7 +51,7 @@ namespace Quartile.Tests.Application.Features.Company.Handlers
             result.Data.DocumentNumber.Should().Be(command.DocumentNumber);
             result.Data.DocumentType.Should().Be(command.DocumentType);
 
-            await _companyRepository.Received(1).AddAsync(Arg.Any<Company>());
+            await _companyRepository.Received(1).AddAsync(Arg.Any<Quartile.Domain.Entities.Company>());
             await _unitOfWork.Received(1).CommitAsync(Arg.Any<CancellationToken>());
         }
 
@@ -64,7 +64,7 @@ namespace Quartile.Tests.Application.Features.Company.Handlers
                 "12345678901234",
                 DocumentType.CNPJ);
 
-            var existingCompany = new Company
+            var existingCompany = new Quartile.Domain.Entities.Company
             {
                 Id = Guid.NewGuid(),
                 Name = "Existing Company",
@@ -83,7 +83,7 @@ namespace Quartile.Tests.Application.Features.Company.Handlers
             result.StatusCode.Should().Be(HttpStatusCode.Conflict);
             result.Notifications.Should().Contain("Company with this document number already exists");
 
-            await _companyRepository.DidNotReceive().AddAsync(Arg.Any<Company>());
+            await _companyRepository.DidNotReceive().AddAsync(Arg.Any<Quartile.Domain.Entities.Company>());
             await _unitOfWork.DidNotReceive().CommitAsync(Arg.Any<CancellationToken>());
         }
 
@@ -96,7 +96,7 @@ namespace Quartile.Tests.Application.Features.Company.Handlers
                 "12345678901234",
                 DocumentType.CNPJ);
 
-            _companyRepository.GetByDocumentNumberAsync(command.DocumentNumber).Returns((Company?)null);
+            _companyRepository.GetByDocumentNumberAsync(command.DocumentNumber).Returns((Quartile.Domain.Entities.Company?)null);
             _unitOfWork.CommitAsync(Arg.Any<CancellationToken>()).Throws(new Exception("Database error"));
 
             // Act & Assert

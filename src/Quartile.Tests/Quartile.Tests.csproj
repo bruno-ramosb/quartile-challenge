@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Quartile.Application\Quartile.Application.csproj" />
     <ProjectReference Include="..\Quartile.Domain\Quartile.Domain.csproj" />
     <ProjectReference Include="..\Quartile.Infrastructure\Quartile.Infrastructure.csproj" />
+    <ProjectReference Include="..\Quartile.Api\Quartile.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>

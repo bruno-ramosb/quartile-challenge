@@ -23,10 +23,6 @@
     <Folder Include="Features\Company\Handlers\Query\" />
     <Folder Include="Features\Company\Responses\Query\" />
     <Folder Include="Features\Company\Validators\Query\" />
-    <Folder Include="Features\Store\Commands\Query\" />
-    <Folder Include="Features\Store\Handlers\Query\" />
-    <Folder Include="Features\Store\Responses\Query\" />
-    <Folder Include="Features\Store\Validators\Query\" />
   </ItemGroup>
 
 </Project>

@@ -1,21 +1,20 @@
 ﻿using System.Reflection;
 using FluentValidation;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using Quartile.Application.Common.Behaviors;
+using Quartile.Application.Interfaces;
+using Quartile.Application.Services;
 
 namespace Quartile.Application
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddCommandHandlers(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             var assembly = Assembly.GetExecutingAssembly();
 
             return services
                 .AddValidatorsFromAssembly(assembly)
-                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly))
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+                .AddScoped<IStoreService, StoreService>();
         }
     }
 }

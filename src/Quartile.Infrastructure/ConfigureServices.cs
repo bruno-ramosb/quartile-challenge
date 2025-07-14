@@ -15,6 +15,7 @@ namespace Quartile.Infrastructure
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IStoreRepository, StoreRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
