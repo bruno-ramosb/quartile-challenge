@@ -9,4 +9,5 @@ public class CreateStoreDto
     public string City { get; set; } = string.Empty;
     public string State { get; set; } = string.Empty;
     public string ZipCode { get; set; } = string.Empty;
+    public Guid CompanyId { get; set; }
 } 

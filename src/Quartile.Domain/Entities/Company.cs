@@ -8,4 +8,6 @@ public class Company : AuditableEntity<Guid>
     public string Name { get; set; } = string.Empty;
     public string DocumentNumber { get; set; } = string.Empty;
     public DocumentType DocumentType { get; set; }
+    
+    public virtual ICollection<Store> Stores { get; set; } = new List<Store>();
 } 

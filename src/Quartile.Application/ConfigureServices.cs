@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Quartile.Application.Interfaces;
 using Quartile.Application.Services;
+using MediatR;
 
 namespace Quartile.Application
 {
@@ -14,6 +15,7 @@ namespace Quartile.Application
 
             return services
                 .AddValidatorsFromAssembly(assembly)
+                .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly))
                 .AddScoped<IStoreService, StoreService>();
         }
     }

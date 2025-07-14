@@ -12,4 +12,7 @@ public class StoreDto
     public string ZipCode { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+    
+    public Guid CompanyId { get; set; }
+    public string CompanyName { get; set; } = string.Empty;
 } 

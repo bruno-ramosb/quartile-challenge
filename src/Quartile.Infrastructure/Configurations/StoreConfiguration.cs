@@ -42,5 +42,13 @@ public class StoreConfiguration : IEntityTypeConfiguration<Store>
             .IsRequired();
             
         builder.Property(s => s.UpdatedAt);
+
+        builder.Property(s => s.CompanyId)
+            .IsRequired();
+
+        builder.HasOne(s => s.Company)
+            .WithMany(c => c.Stores)
+            .HasForeignKey(s => s.CompanyId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 } 
