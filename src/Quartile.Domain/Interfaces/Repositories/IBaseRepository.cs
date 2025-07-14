@@ -6,9 +6,9 @@ namespace Quartile.Domain.Interfaces.Repositories
     where TEntity : IEntity<TKey>
     where TKey : IEquatable<TKey>
     {
-        Task Add(TEntity entity);
-        Task Update(TEntity entity);
-        Task Remove(TEntity entity);
+        Task AddAsync(TEntity entity);
+        Task UpdateAsync(TEntity entity);
+        Task RemoveAsync(TEntity entity);
         Task<TEntity> GetByIdAsync(TKey id);
     }
 }

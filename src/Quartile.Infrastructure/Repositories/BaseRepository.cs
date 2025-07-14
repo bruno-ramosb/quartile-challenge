@@ -12,13 +12,13 @@ namespace Quartile.Infrastructure.Repositories
         private readonly DbSet<TEntity> _dbSet = context.Set<TEntity>();
         protected readonly QuartileContext Context = context;
 
-        public async Task Add(TEntity entity) => 
+        public async Task AddAsync(TEntity entity) => 
             await _dbSet.AddAsync(entity);
 
-        public Task Update(TEntity entity) =>
+        public Task UpdateAsync(TEntity entity) =>
             Task.FromResult(_dbSet.Update(entity));
 
-        public Task Remove(TEntity entity) =>
+        public Task RemoveAsync(TEntity entity) =>
             Task.FromResult(_dbSet.Remove(entity));
 
         public async Task<TEntity> GetByIdAsync(Tkey id) =>

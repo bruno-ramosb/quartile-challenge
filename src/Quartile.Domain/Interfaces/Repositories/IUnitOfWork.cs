@@ -3,7 +3,7 @@
     public interface IUnitOfWork : IDisposable
     {
         void BeginTransaction();
-        Task<int> Commit(CancellationToken cancellationToken);
+        Task<int> CommitAsync(CancellationToken cancellationToken);
         void Rollback();
     }
 }

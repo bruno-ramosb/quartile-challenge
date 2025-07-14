@@ -18,7 +18,7 @@ namespace Quartile.Infrastructure.Repositories
             _dbContext.Database.BeginTransaction();
         }
 
-        public async Task<int> Commit(CancellationToken cancellationToken) => 
+        public async Task<int> CommitAsync(CancellationToken cancellationToken) => 
             await _dbContext.SaveChangesAsync(cancellationToken);
         
 
