@@ -11,8 +11,18 @@ namespace Quartile.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<QuartileContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("QuartileConnection")));
+            var connectionString = configuration.GetConnectionString("QuartileConnection");
+            
+            if (connectionString?.Contains("Server=tcp:") == true)
+            {
+                services.AddDbContext<QuartileContext>(options =>
+                    options.UseSqlServer(connectionString));
+            }
+            else
+            {
+                services.AddDbContext<QuartileContext>(options =>
+                    options.UseSqlite(connectionString ?? "Data Source=sqlite.db"));
+            }
 
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IStoreRepository, StoreRepository>();
