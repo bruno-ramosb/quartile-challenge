@@ -21,7 +21,7 @@ public class ProductFunctions
 
     [Function("GetProducts")]
     public async Task<HttpResponseData> GetProducts(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products")] HttpRequestData req)
     {
         _logger.LogInformation("GetProducts function processed a request.");
 
@@ -44,7 +44,7 @@ public class ProductFunctions
 
     [Function("GetProductsAsJson")]
     public async Task<HttpResponseData> GetProductsAsJson(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products-json")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products-json")] HttpRequestData req)
     {
         _logger.LogInformation("GetProductsAsJson function processed a request.");
 
@@ -65,7 +65,7 @@ public class ProductFunctions
 
     [Function("GetProductsList")]
     public async Task<HttpResponseData> GetProductsList(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products-list")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products-list")] HttpRequestData req)
     {
         _logger.LogInformation("GetProductsList function processed a request.");
 
@@ -86,7 +86,7 @@ public class ProductFunctions
 
     [Function("GetProduct")]
     public async Task<HttpResponseData> GetProduct(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products/{id}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "products/{id}")] HttpRequestData req,
         string id)
     {
         _logger.LogInformation("GetProduct function processed a request for ID: {Id}", id);
@@ -118,7 +118,7 @@ public class ProductFunctions
 
     [Function("CreateProduct")]
     public async Task<HttpResponseData> CreateProduct(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "products")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "products")] HttpRequestData req)
     {
         _logger.LogInformation("CreateProduct function processed a request.");
 
@@ -162,7 +162,7 @@ public class ProductFunctions
 
     [Function("UpdateProduct")]
     public async Task<HttpResponseData> UpdateProduct(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "products/{id}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "products/{id}")] HttpRequestData req,
         string id)
     {
         _logger.LogInformation("UpdateProduct function processed a request for ID: {Id}", id);
@@ -221,7 +221,7 @@ public class ProductFunctions
 
     [Function("DeleteProduct")]
     public async Task<HttpResponseData> DeleteProduct(
-        [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "products/{id}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "products/{id}")] HttpRequestData req,
         string id)
     {
         _logger.LogInformation("DeleteProduct function processed a request for ID: {Id}", id);

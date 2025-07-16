@@ -3,6 +3,8 @@
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "SqlConnectionString": "Server=localhost;Database=QuartileDB;Trusted_Connection=true;"
+    "SqlConnectionString": "Server=localhost;Database=QuartileDB;Trusted_Connection=true;",
+    "FUNCTIONS_EXTENSION_VERSION": "~4",
+    "WEBSITE_AUTHENTICATION_ANONYMOUS": "true"
   }
 } 
