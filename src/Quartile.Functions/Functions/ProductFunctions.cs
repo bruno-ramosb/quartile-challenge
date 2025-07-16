@@ -158,6 +158,12 @@ public class ProductFunctions
             await badRequestResponse.WriteStringAsync("Invalid JSON format");
             return badRequestResponse;
         }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.StackTrace);
+            _logger.LogError(ex, ex.Message);
+            throw;
+        }
     }
 
     [Function("UpdateProduct")]
