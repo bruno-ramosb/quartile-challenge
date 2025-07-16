@@ -26,21 +26,15 @@ namespace Quartile.Infrastructure.Configurations
                 .IsRequired()
                 .HasDefaultValue(0);
 
-            builder.HasOne(p => p.Company)
-                .WithMany()
-                .HasForeignKey(p => p.CompanyId)
-                .OnDelete(DeleteBehavior.Restrict);
-
             builder.HasOne(p => p.Store)
                 .WithMany()
                 .HasForeignKey(p => p.StoreId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasIndex(p => new { p.Sku, p.CompanyId })
+            builder.HasIndex(p => new { p.Sku, p.StoreId })
                 .IsUnique();
 
             builder.HasIndex(p => p.StoreId);
-            builder.HasIndex(p => p.CompanyId);
             builder.HasIndex(p => p.Sku);
         }
     }

@@ -63,9 +63,6 @@ namespace Quartile.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("CompanyId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -95,13 +92,11 @@ namespace Quartile.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CompanyId");
-
                     b.HasIndex("Sku");
 
                     b.HasIndex("StoreId");
 
-                    b.HasIndex("Sku", "CompanyId")
+                    b.HasIndex("Sku", "StoreId")
                         .IsUnique();
 
                     b.ToTable("Products");
@@ -166,19 +161,11 @@ namespace Quartile.Infrastructure.Migrations
 
             modelBuilder.Entity("Quartile.Domain.Entities.Product", b =>
                 {
-                    b.HasOne("Quartile.Domain.Entities.Company", "Company")
-                        .WithMany()
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Quartile.Domain.Entities.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Company");
 
                     b.Navigation("Store");
                 });

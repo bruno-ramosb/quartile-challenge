@@ -4,7 +4,6 @@ GO
 
 CREATE FUNCTION GetProductsList
 (
-    @CompanyId UNIQUEIDENTIFIER = NULL,
     @StoreId UNIQUEIDENTIFIER = NULL
 )
 RETURNS NVARCHAR(MAX)
@@ -20,8 +19,7 @@ BEGIN
         ', Stock: ' + CAST(ISNULL(Stock, 0) AS NVARCHAR(10)) + 
         ' | '
     FROM Products 
-    WHERE (@CompanyId IS NULL OR CompanyId = @CompanyId)
-        AND (@StoreId IS NULL OR StoreId = @StoreId)
+    WHERE (@StoreId IS NULL OR StoreId = @StoreId)
     ORDER BY Name;
     
     RETURN ISNULL(@ProductList, 'No products found.');

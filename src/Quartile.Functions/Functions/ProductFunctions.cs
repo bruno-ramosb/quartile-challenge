@@ -25,24 +25,61 @@ public class ProductFunctions
     {
         _logger.LogInformation("GetProducts function processed a request.");
 
-        var companyId = req.Query["companyId"];
         var storeId = req.Query["storeId"];
-
-        Guid? companyIdValue = null;
         Guid? storeIdValue = null;
 
-        if (!string.IsNullOrEmpty(companyId) && Guid.TryParse(companyId, out var tempCompanyId))
-            companyIdValue = tempCompanyId;
         if (!string.IsNullOrEmpty(storeId) && Guid.TryParse(storeId, out var tempStoreId))
             storeIdValue = tempStoreId;
 
-        var products = await _productService.GetAllProductsAsync(companyIdValue, storeIdValue);
+        var products = await _productService.GetAllProductsAsync(storeIdValue);
         
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.Headers.Add("Content-Type", "application/json; charset=utf-8");
         
         var jsonResponse = JsonSerializer.Serialize(products, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-        response.WriteString(jsonResponse);
+        await response.WriteStringAsync(jsonResponse);
+        
+        return response;
+    }
+
+    [Function("GetProductsAsJson")]
+    public async Task<HttpResponseData> GetProductsAsJson(
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products-json")] HttpRequestData req)
+    {
+        _logger.LogInformation("GetProductsAsJson function processed a request.");
+
+        var storeId = req.Query["storeId"];
+        Guid? storeIdValue = null;
+
+        if (!string.IsNullOrEmpty(storeId) && Guid.TryParse(storeId, out var tempStoreId))
+            storeIdValue = tempStoreId;
+
+        var jsonResult = await _productService.GetProductsAsJsonAsync(storeIdValue);
+        
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.Headers.Add("Content-Type", "application/json; charset=utf-8");
+        await response.WriteStringAsync(jsonResult);
+        
+        return response;
+    }
+
+    [Function("GetProductsList")]
+    public async Task<HttpResponseData> GetProductsList(
+        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products-list")] HttpRequestData req)
+    {
+        _logger.LogInformation("GetProductsList function processed a request.");
+
+        var storeId = req.Query["storeId"];
+        Guid? storeIdValue = null;
+
+        if (!string.IsNullOrEmpty(storeId) && Guid.TryParse(storeId, out var tempStoreId))
+            storeIdValue = tempStoreId;
+
+        var listResult = await _productService.GetProductsListAsync(storeIdValue);
+        
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+        await response.WriteStringAsync(listResult);
         
         return response;
     }
@@ -57,7 +94,7 @@ public class ProductFunctions
         if (!Guid.TryParse(id, out var productId))
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Invalid product ID format");
+            await badRequestResponse.WriteStringAsync("Invalid product ID format");
             return badRequestResponse;
         }
 
@@ -66,7 +103,7 @@ public class ProductFunctions
         if (product == null)
         {
             var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
-            notFoundResponse.WriteString("Product not found");
+            await notFoundResponse.WriteStringAsync("Product not found");
             return notFoundResponse;
         }
         
@@ -74,7 +111,7 @@ public class ProductFunctions
         response.Headers.Add("Content-Type", "application/json; charset=utf-8");
         
         var jsonResponse = JsonSerializer.Serialize(product, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-        response.WriteString(jsonResponse);
+        await response.WriteStringAsync(jsonResponse);
         
         return response;
     }
@@ -90,7 +127,7 @@ public class ProductFunctions
         if (string.IsNullOrEmpty(requestBody))
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Request body is required");
+            await badRequestResponse.WriteStringAsync("Request body is required");
             return badRequestResponse;
         }
 
@@ -101,7 +138,7 @@ public class ProductFunctions
             if (product == null)
             {
                 var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-                badRequestResponse.WriteString("Invalid product data");
+                await badRequestResponse.WriteStringAsync("Invalid product data");
                 return badRequestResponse;
             }
 
@@ -111,14 +148,14 @@ public class ProductFunctions
             response.Headers.Add("Content-Type", "application/json; charset=utf-8");
             
             var jsonResponse = JsonSerializer.Serialize(createdProduct, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-            response.WriteString(jsonResponse);
+            await response.WriteStringAsync(jsonResponse);
             
             return response;
         }
         catch (JsonException)
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Invalid JSON format");
+            await badRequestResponse.WriteStringAsync("Invalid JSON format");
             return badRequestResponse;
         }
     }
@@ -133,7 +170,7 @@ public class ProductFunctions
         if (!Guid.TryParse(id, out var productId))
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Invalid product ID format");
+            await badRequestResponse.WriteStringAsync("Invalid product ID format");
             return badRequestResponse;
         }
 
@@ -142,7 +179,7 @@ public class ProductFunctions
         if (string.IsNullOrEmpty(requestBody))
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Request body is required");
+            await badRequestResponse.WriteStringAsync("Request body is required");
             return badRequestResponse;
         }
 
@@ -153,7 +190,7 @@ public class ProductFunctions
             if (product == null)
             {
                 var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-                badRequestResponse.WriteString("Invalid product data");
+                await badRequestResponse.WriteStringAsync("Invalid product data");
                 return badRequestResponse;
             }
 
@@ -162,7 +199,7 @@ public class ProductFunctions
             if (updatedProduct == null)
             {
                 var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
-                notFoundResponse.WriteString("Product not found");
+                await notFoundResponse.WriteStringAsync("Product not found");
                 return notFoundResponse;
             }
             
@@ -170,14 +207,14 @@ public class ProductFunctions
             response.Headers.Add("Content-Type", "application/json; charset=utf-8");
             
             var jsonResponse = JsonSerializer.Serialize(updatedProduct, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase });
-            response.WriteString(jsonResponse);
+            await response.WriteStringAsync(jsonResponse);
             
             return response;
         }
         catch (JsonException)
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Invalid JSON format");
+            await badRequestResponse.WriteStringAsync("Invalid JSON format");
             return badRequestResponse;
         }
     }
@@ -192,7 +229,7 @@ public class ProductFunctions
         if (!Guid.TryParse(id, out var productId))
         {
             var badRequestResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            badRequestResponse.WriteString("Invalid product ID format");
+            await badRequestResponse.WriteStringAsync("Invalid product ID format");
             return badRequestResponse;
         }
 
@@ -201,63 +238,11 @@ public class ProductFunctions
         if (!success)
         {
             var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
-            notFoundResponse.WriteString("Product not found");
+            await notFoundResponse.WriteStringAsync("Product not found");
             return notFoundResponse;
         }
         
         var response = req.CreateResponse(HttpStatusCode.NoContent);
-        return response;
-    }
-
-    [Function("GetProductsAsJson")]
-    public async Task<HttpResponseData> GetProductsAsJson(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products/json")] HttpRequestData req)
-    {
-        _logger.LogInformation("GetProductsAsJson function processed a request.");
-
-        var companyId = req.Query["companyId"];
-        var storeId = req.Query["storeId"];
-
-        Guid? companyIdValue = null;
-        Guid? storeIdValue = null;
-
-        if (!string.IsNullOrEmpty(companyId) && Guid.TryParse(companyId, out var tempCompanyId))
-            companyIdValue = tempCompanyId;
-        if (!string.IsNullOrEmpty(storeId) && Guid.TryParse(storeId, out var tempStoreId))
-            storeIdValue = tempStoreId;
-
-        var jsonResult = await _productService.GetProductsAsJsonAsync(companyIdValue, storeIdValue);
-        
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        response.Headers.Add("Content-Type", "application/json; charset=utf-8");
-        response.WriteString(jsonResult);
-        
-        return response;
-    }
-
-    [Function("GetProductsList")]
-    public async Task<HttpResponseData> GetProductsList(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "products/list")] HttpRequestData req)
-    {
-        _logger.LogInformation("GetProductsList function processed a request.");
-
-        var companyId = req.Query["companyId"];
-        var storeId = req.Query["storeId"];
-
-        Guid? companyIdValue = null;
-        Guid? storeIdValue = null;
-
-        if (!string.IsNullOrEmpty(companyId) && Guid.TryParse(companyId, out var tempCompanyId))
-            companyIdValue = tempCompanyId;
-        if (!string.IsNullOrEmpty(storeId) && Guid.TryParse(storeId, out var tempStoreId))
-            storeIdValue = tempStoreId;
-
-        var listResult = await _productService.GetProductsListAsync(companyIdValue, storeIdValue);
-        
-        var response = req.CreateResponse(HttpStatusCode.OK);
-        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
-        response.WriteString(listResult);
-        
         return response;
     }
 } 

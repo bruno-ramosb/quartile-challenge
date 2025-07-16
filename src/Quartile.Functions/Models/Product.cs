@@ -23,9 +23,6 @@ public class Product
     public int Stock { get; set; }
     
     [Required]
-    public Guid CompanyId { get; set; }
-    
-    [Required]
     public Guid StoreId { get; set; }
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

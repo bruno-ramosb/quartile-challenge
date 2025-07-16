@@ -4,7 +4,6 @@ GO
 
 CREATE FUNCTION GetProductsAsJson
 (
-    @CompanyId UNIQUEIDENTIFIER = NULL,
     @StoreId UNIQUEIDENTIFIER = NULL
 )
 RETURNS NVARCHAR(MAX)
@@ -19,13 +18,11 @@ BEGIN
             Sku,
             Price,
             Stock,
-            CompanyId,
             StoreId,
             CreatedAt,
             UpdatedAt
         FROM Products 
-        WHERE (@CompanyId IS NULL OR CompanyId = @CompanyId)
-            AND (@StoreId IS NULL OR StoreId = @StoreId)
+        WHERE (@StoreId IS NULL OR StoreId = @StoreId)
         FOR JSON PATH, ROOT('products')
     );
     
@@ -39,7 +36,6 @@ GO
 
 CREATE FUNCTION GetProductsList
 (
-    @CompanyId UNIQUEIDENTIFIER = NULL,
     @StoreId UNIQUEIDENTIFIER = NULL
 )
 RETURNS NVARCHAR(MAX)
@@ -55,8 +51,7 @@ BEGIN
         ', Stock: ' + CAST(Stock AS NVARCHAR(10)) + 
         CHAR(13) + CHAR(10)
     FROM Products 
-    WHERE (@CompanyId IS NULL OR CompanyId = @CompanyId)
-        AND (@StoreId IS NULL OR StoreId = @StoreId)
+    WHERE (@StoreId IS NULL OR StoreId = @StoreId)
     ORDER BY Name;
     
     RETURN ISNULL(@ProductList, 'No products found.');
@@ -73,7 +68,6 @@ CREATE PROCEDURE InsertProduct
     @Sku NVARCHAR(50),
     @Price DECIMAL(18,2),
     @Stock INT,
-    @CompanyId UNIQUEIDENTIFIER,
     @StoreId UNIQUEIDENTIFIER,
     @CreatedAt DATETIME2,
     @UpdatedAt DATETIME2
@@ -82,8 +76,8 @@ BEGIN
     SET NOCOUNT ON;
     
     BEGIN TRY
-        INSERT INTO Products (Id, Name, Sku, Price, Stock, CompanyId, StoreId, CreatedAt, UpdatedAt)
-        VALUES (@Id, @Name, @Sku, @Price, @Stock, @CompanyId, @StoreId, @CreatedAt, @UpdatedAt);
+        INSERT INTO Products (Id, Name, Sku, Price, Stock, StoreId, CreatedAt, UpdatedAt)
+        VALUES (@Id, @Name, @Sku, @Price, @Stock, @StoreId, @CreatedAt, @UpdatedAt);
         
         SELECT @Id AS Id;
     END TRY

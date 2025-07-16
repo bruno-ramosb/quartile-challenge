@@ -8,7 +8,6 @@ CREATE PROCEDURE InsertProduct
     @Sku NVARCHAR(50),
     @Price DECIMAL(18,2),
     @Stock INT,
-    @CompanyId UNIQUEIDENTIFIER,
     @StoreId UNIQUEIDENTIFIER,
     @CreatedAt DATETIME2,
     @UpdatedAt DATETIME2
@@ -17,8 +16,8 @@ BEGIN
     SET NOCOUNT ON;
     
     BEGIN TRY
-        INSERT INTO Products (Id, Name, Sku, Price, Stock, CompanyId, StoreId, CreatedAt, UpdatedAt)
-        VALUES (@Id, @Name, @Sku, @Price, @Stock, @CompanyId, @StoreId, @CreatedAt, @UpdatedAt);
+        INSERT INTO Products (Id, Name, Sku, Price, Stock, StoreId, CreatedAt, UpdatedAt)
+        VALUES (@Id, @Name, @Sku, @Price, @Stock, @StoreId, @CreatedAt, @UpdatedAt);
         
         SELECT @Id AS Id;
     END TRY

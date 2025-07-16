@@ -63,7 +63,6 @@ namespace Quartile.Infrastructure.Migrations
                     Sku = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Stock = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
-                    CompanyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     StoreId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -71,12 +70,6 @@ namespace Quartile.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Products", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Products_Companies_CompanyId",
-                        column: x => x.CompanyId,
-                        principalTable: "Companies",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Products_Stores_StoreId",
                         column: x => x.StoreId,
@@ -97,19 +90,14 @@ namespace Quartile.Infrastructure.Migrations
                 column: "Name");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_CompanyId",
-                table: "Products",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Products_Sku",
                 table: "Products",
                 column: "Sku");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Products_Sku_CompanyId",
+                name: "IX_Products_Sku_StoreId",
                 table: "Products",
-                columns: new[] { "Sku", "CompanyId" },
+                columns: new[] { "Sku", "StoreId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

@@ -35,8 +35,4 @@
     <ProjectReference Include="..\Quartile.Api\Quartile.Api.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="_Builders\" />
-  </ItemGroup>
-
 </Project>

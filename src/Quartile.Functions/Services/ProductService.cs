@@ -14,19 +14,13 @@ public class ProductService : IProductService
         _connectionString = configuration["SqlConnectionString"] ?? throw new ArgumentNullException(nameof(configuration));
     }
 
-    public async Task<IEnumerable<Product>> GetAllProductsAsync(Guid? companyId = null, Guid? storeId = null)
+    public async Task<IEnumerable<Product>> GetAllProductsAsync(Guid? storeId = null)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
         
-        var query = "SELECT Id, Name, Sku, Price, Stock, CompanyId, StoreId, CreatedAt, UpdatedAt FROM Products WHERE 1=1";
+        var query = "SELECT Id, Name, Sku, Price, Stock, StoreId, CreatedAt, UpdatedAt FROM Products WHERE 1=1";
         var parameters = new DynamicParameters();
-        
-        if (companyId.HasValue)
-        {
-            query += " AND CompanyId = @CompanyId";
-            parameters.Add("@CompanyId", companyId.Value);
-        }
         
         if (storeId.HasValue)
         {
@@ -42,7 +36,7 @@ public class ProductService : IProductService
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
         
-        var query = "SELECT Id, Name, Sku, Price, Stock, CompanyId, StoreId, CreatedAt, UpdatedAt FROM Products WHERE Id = @Id";
+        var query = "SELECT Id, Name, Sku, Price, Stock, StoreId, CreatedAt, UpdatedAt FROM Products WHERE Id = @Id";
         return await connection.QueryFirstOrDefaultAsync<Product>(query, new { Id = id });
     }
 
@@ -56,8 +50,8 @@ public class ProductService : IProductService
         product.UpdatedAt = DateTime.UtcNow;
         
         var query = @"
-            INSERT INTO Products (Id, Name, Sku, Price, Stock, CompanyId, StoreId, CreatedAt, UpdatedAt)
-            VALUES (@Id, @Name, @Sku, @Price, @Stock, @CompanyId, @StoreId, @CreatedAt, @UpdatedAt)";
+            INSERT INTO Products (Id, Name, Sku, Price, Stock, StoreId, CreatedAt, UpdatedAt)
+            VALUES (@Id, @Name, @Sku, @Price, @Stock, @StoreId, @CreatedAt, @UpdatedAt)";
         
         await connection.ExecuteAsync(query, product);
         return product;
@@ -71,7 +65,7 @@ public class ProductService : IProductService
         var query = @"
             UPDATE Products 
             SET Name = @Name, Sku = @Sku, Price = @Price, Stock = @Stock, 
-                CompanyId = @CompanyId, StoreId = @StoreId, UpdatedAt = @UpdatedAt
+                StoreId = @StoreId, UpdatedAt = @UpdatedAt
             WHERE Id = @Id";
         
         var parameters = new
@@ -81,7 +75,6 @@ public class ProductService : IProductService
             product.Sku,
             product.Price,
             product.Stock,
-            product.CompanyId,
             product.StoreId,
             UpdatedAt = DateTime.UtcNow
         };
@@ -108,28 +101,26 @@ public class ProductService : IProductService
         return rowsAffected > 0;
     }
 
-    public async Task<string> GetProductsAsJsonAsync(Guid? companyId = null, Guid? storeId = null)
+    public async Task<string> GetProductsAsJsonAsync(Guid? storeId = null)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
         
-        var query = "SELECT dbo.GetProductsAsJson(@CompanyId, @StoreId) as JsonResult";
+        var query = "SELECT dbo.GetProductsAsJson(@StoreId) as JsonResult";
         var parameters = new DynamicParameters();
-        parameters.Add("@CompanyId", companyId);
         parameters.Add("@StoreId", storeId);
         
         var result = await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
         return result ?? "[]";
     }
 
-    public async Task<string> GetProductsListAsync(Guid? companyId = null, Guid? storeId = null)
+    public async Task<string> GetProductsListAsync(Guid? storeId = null)
     {
         using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
         
-        var query = "SELECT dbo.GetProductsList(@CompanyId, @StoreId) as ProductList";
+        var query = "SELECT dbo.GetProductsList(@StoreId) as ProductList";
         var parameters = new DynamicParameters();
-        parameters.Add("@CompanyId", companyId);
         parameters.Add("@StoreId", storeId);
         
         var result = await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
