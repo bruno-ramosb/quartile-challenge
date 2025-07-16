@@ -62,6 +62,11 @@ jobs:
                 "name": "SqlConnectionString",
                 "value": "${{ secrets.AZURE_SQL_CONNECTION_STRING }}",
                 "slotSetting": false
+              },
+              {
+                "name": "WEBSITE_AUTHENTICATION_ANONYMOUS",
+                "value": "true",
+                "slotSetting": false
               }
             ]
           
