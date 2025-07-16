@@ -13,8 +13,8 @@ Quartile API is a RESTful service built with .NET 8, implementing a hybrid archi
 
 ## Base URLs
 
-- **Web API**: `https://localhost:7243`
-- **Azure Functions**: `http://localhost:7069`
+- **Web API**: `https://quartile-api-prod.azurewebsites.net`
+- **Azure Functions**: `https://quartile-function-prod.azurewebsites.net`
 
 ## Authentication
 
