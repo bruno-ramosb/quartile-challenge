@@ -82,5 +82,5 @@ jobs:
         run: Start-Sleep -Seconds 30
           
       - name: Swap Staging to Production
-        run: az webapp deployment slot swap --name quartile-api-prod --resource-group quartile-grupo --slot staging --target-slot production --preserve-vnet
+        run: az webapp deployment slot swap --name quartile-api-prod --resource-group quartile-grupo --slot staging --target-slot production
           
