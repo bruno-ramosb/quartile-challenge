@@ -1,0 +1,584 @@
+{
+	"info": {
+		"_postman_id": "quartile-api-collection",
+		"name": "Quartile API - Complete Collection",
+		"description": "Complete RESTful API collection for Companies, Stores and Products (Azure Functions)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Companies (API)",
+			"item": [
+				{
+					"name": "Create Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    try {",
+									"        const response = pm.response.json();",
+									"        if (response.id) {",
+									"            pm.variables.set('companyId', response.id);",
+									"        } else if (response.data && response.data.id) {",
+									"            pm.variables.set('companyId', response.data.id);",
+									"        }",
+									"    } catch (error) {",
+									"        console.log('Error parsing response:', error);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tech Solutions Inc\",\n    \"documentNumber\": \"{{documentNumber}}\",\n    \"documentType\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Companies",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Company",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Company"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Company by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Company/{{companyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Company",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Company",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"{{companyId}}\",\n    \"name\": \"Updated Tech Solutions Inc\",\n    \"documentNumber\": \"{{updateDocumentNumber}}\",\n    \"documentType\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Company/{{companyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Company",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Stores (API)",
+			"item": [
+				{
+					"name": "Create Store",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    try {",
+									"        const response = pm.response.json();",
+									"        if (response.id) {",
+									"            pm.variables.set('storeId', response.id);",
+									"        } else if (response.data && response.data.id) {",
+									"            pm.variables.set('storeId', response.data.id);",
+									"        }",
+									"    } catch (error) {",
+									"        console.log('Error parsing response:', error);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Downtown Store\",\n    \"email\": \"downtown@techsolutions.com\",\n    \"phone\": \"+1-555-0123\",\n    \"address\": \"123 Main Street\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10001\",\n    \"companyId\": \"{{companyId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Store",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Stores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Store",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Store"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Store by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Store/{{storeId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Store",
+								"{{storeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Store",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Updated Downtown Store\",\n    \"email\": \"updated.downtown@techsolutions.com\",\n    \"phone\": \"+1-555-0124\",\n    \"address\": \"123 Main Street\",\n    \"city\": \"New York\",\n    \"state\": \"NY\",\n    \"zipCode\": \"10001\",\n    \"companyId\": \"{{companyId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/Store/{{storeId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Store",
+								"{{storeId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Products (Azure Functions)",
+			"item": [
+				{
+					"name": "Create Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 201) {",
+									"    try {",
+									"        const response = pm.response.json();",
+									"        if (response.id) {",
+									"            pm.variables.set('productId', response.id);",
+									"        } else if (response.data && response.data.id) {",
+									"            pm.variables.set('productId', response.data.id);",
+									"        }",
+									"    } catch (error) {",
+									"        console.log('Error parsing response:', error);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"iPhone 15 Pro\",\n    \"sku\": \"IPHONE-15-PRO-001\",\n    \"price\": 999.99,\n    \"stock\": 50,\n    \"storeId\": \"{{storeId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{functionUrl}}/api/products",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{functionUrl}}/api/products",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products by Store",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{functionUrl}}/api/products?storeId={{storeId}}",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products"
+							],
+							"query": [
+								{
+									"key": "storeId",
+									"value": "{{storeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{functionUrl}}/api/products/{{productId}}",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"iPhone 15 Pro Max\",\n    \"sku\": \"IPHONE-15-PRO-MAX-001\",\n    \"price\": 1199.99,\n    \"stock\": 75,\n    \"storeId\": \"{{storeId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{functionUrl}}/api/products/{{productId}}",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products as JSON",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{functionUrl}}/api/products-json?storeId={{storeId}}",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products-json"
+							],
+							"query": [
+								{
+									"key": "storeId",
+									"value": "{{storeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Products List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{functionUrl}}/api/products-list?storeId={{storeId}}",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products-list"
+							],
+							"query": [
+								{
+									"key": "storeId",
+									"value": "{{storeId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cleanup (Delete in Order)",
+			"item": [
+				{
+					"name": "Delete Product",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 204) {",
+									"    pm.variables.unset('productId');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{functionUrl}}/api/products/{{productId}}",
+							"host": [
+								"{{functionUrl}}"
+							],
+							"path": [
+								"api",
+								"products",
+								"{{productId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Store",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 204) {",
+									"    pm.variables.unset('storeId');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/Store/{{storeId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"Store",
+								"{{storeId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Company",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200 || pm.response.code === 204) {",
+									"    pm.variables.unset('companyId');",
+									"    pm.variables.unset('storeId');",
+									"    pm.variables.unset('productId');",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/Company/{{companyId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Company",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://quartile-api-prod.azurewebsites.net",
+			"type": "string"
+		},
+		{
+			"key": "functionUrl",
+			"value": "https://quartile-function-prod.azurewebsites.net",
+			"type": "string"
+		},
+		{
+			"key": "companyId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "storeId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "productId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "documentNumber",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "updateDocumentNumber",
+			"value": "",
+			"type": "string"
+		}
+	]
+} 
