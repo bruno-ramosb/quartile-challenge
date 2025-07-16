@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Quartile.Domain.Interfaces.Repositories;
 using Quartile.Infrastructure.Context;
 using Quartile.Infrastructure.Repositories;
-using Microsoft.Extensions.Logging;
 
 namespace Quartile.Infrastructure
 {
@@ -36,17 +35,12 @@ namespace Quartile.Infrastructure
         {
             using var scope = serviceProvider.CreateScope();
             var context = scope.ServiceProvider.GetRequiredService<QuartileContext>();
-            var logger = scope.ServiceProvider.GetRequiredService<ILogger<QuartileContext>>();
-            
             try
             {
-                await context.Database.MigrateAsync();
-                logger.LogInformation("Database migrations applied successfully");
+                await context.Database.EnsureCreatedAsync();
+                await context.CreateProductFunctionsAsync();
             }
-            catch (Exception ex)
-            {
-                logger.LogError(ex, "Error applying database migrations");
-                throw;
+            catch { 
             }
         }
     }

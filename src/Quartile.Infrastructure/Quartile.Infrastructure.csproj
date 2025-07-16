@@ -25,6 +25,13 @@
 
   <ItemGroup>
     <Folder Include="Configurations\" />
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Scripts\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

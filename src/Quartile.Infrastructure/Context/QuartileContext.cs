@@ -8,18 +8,17 @@ namespace Quartile.Infrastructure.Context
     {
         public DbSet<Company> Companies { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         public QuartileContext(DbContextOptions<QuartileContext> options) : base(options)
         {
         }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.EnableSensitiveDataLogging();
             base.OnConfiguring(optionsBuilder);
         }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,6 +48,26 @@ namespace Quartile.Infrastructure.Context
                 entry.State = EntityState.Detached;
 
             return result;
+        }
+
+        public async Task CreateProductFunctionsAsync()
+        {
+            var scripts = new[]
+            {
+                "CreateProductFunctions.sql",
+                "CreateProductListFunction.sql", 
+                "CreateInsertProductProcedure.sql"
+            };
+
+            foreach (var scriptName in scripts)
+            {
+                var scriptPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Scripts", scriptName);
+                if (File.Exists(scriptPath))
+                {
+                    var script = await File.ReadAllTextAsync(scriptPath);
+                    await Database.ExecuteSqlRawAsync(script);
+                }
+            }
         }
     }
 }
