@@ -5,6 +5,8 @@ using Quartile.Application.Services;
 using Quartile.Domain.Interfaces.Repositories;
 using FluentValidation;
 using Quartile.Application.Validators.Store;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 
 namespace Quartile.Tests.Application.Features.Store;
 
@@ -13,6 +15,7 @@ public class StoreServiceTests
     private readonly IStoreRepository _storeRepository;
     private readonly ICompanyRepository _companyRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<StoreService> _logger;
     private readonly StoreService _storeService;
 
     public StoreServiceTests()
@@ -20,9 +23,10 @@ public class StoreServiceTests
         _storeRepository = Substitute.For<IStoreRepository>();
         _companyRepository = Substitute.For<ICompanyRepository>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
+        _logger = Substitute.For<ILogger<StoreService>>();
         var createValidator = new CreateStoreDtoValidator();
         var updateValidator = new UpdateStoreDtoValidator();
-        _storeService = new StoreService(_storeRepository, _companyRepository, _unitOfWork, createValidator, updateValidator);
+        _storeService = new StoreService(_storeRepository, _companyRepository, _unitOfWork, createValidator, updateValidator, _logger);
     }
 
     [Fact]

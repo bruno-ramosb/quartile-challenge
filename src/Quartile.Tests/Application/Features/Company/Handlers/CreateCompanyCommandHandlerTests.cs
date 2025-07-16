@@ -11,6 +11,8 @@ using Company = Quartile.Domain.Entities.Company;
 using Quartile.Domain.Enums;
 using Quartile.Domain.Interfaces.Repositories;
 using System.Net;
+using Microsoft.Extensions.Logging;
+using Quartile.Application.Services;
 
 namespace Quartile.Tests.Application.Features.Company.Handlers
 {
@@ -18,13 +20,15 @@ namespace Quartile.Tests.Application.Features.Company.Handlers
     {
         private readonly ICompanyRepository _companyRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ILogger<CreateCompanyCommandHandler> _logger;
         private readonly CreateCompanyCommandHandler _handler;
 
         public CreateCompanyCommandHandlerTests()
         {
             _companyRepository = Substitute.For<ICompanyRepository>();
             _unitOfWork = Substitute.For<IUnitOfWork>();
-            _handler = new CreateCompanyCommandHandler(_companyRepository, _unitOfWork);
+            _logger = Substitute.For<ILogger<CreateCompanyCommandHandler>>();
+            _handler = new CreateCompanyCommandHandler(_companyRepository, _unitOfWork, _logger);
         }
 
         [Fact]
