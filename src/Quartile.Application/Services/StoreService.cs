@@ -6,6 +6,7 @@ using System.Net;
 using Quartile.Application.Interfaces;
 using FluentValidation;
 using Quartile.Application.Validators.Store;
+using Microsoft.Extensions.Logging;
 
 namespace Quartile.Application.Services;
 
@@ -16,32 +17,39 @@ public class StoreService : IStoreService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IValidator<CreateStoreDto> _createValidator;
     private readonly IValidator<UpdateStoreDto> _updateValidator;
+    private readonly ILogger<StoreService> _logger;
 
     public StoreService(
         IStoreRepository storeRepository,
         ICompanyRepository companyRepository,
         IUnitOfWork unitOfWork,
         IValidator<CreateStoreDto> createValidator,
-        IValidator<UpdateStoreDto> updateValidator)
+        IValidator<UpdateStoreDto> updateValidator,
+        ILogger<StoreService> logger)
     {
         _storeRepository = storeRepository;
         _companyRepository = companyRepository;
         _unitOfWork = unitOfWork;
         _createValidator = createValidator;
         _updateValidator = updateValidator;
+        _logger = logger;
     }
 
     public async Task<Result<StoreDto>> CreateAsync(CreateStoreDto createStoreDto)
     {
+        _logger.LogInformation("Creating store with name: {StoreName}", createStoreDto.Name);
+        
         var validationResult = await _createValidator.ValidateAsync(createStoreDto);
         if (!validationResult.IsValid)
         {
+            _logger.LogWarning("Validation failed for store creation: {Errors}", string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage)));
             return Result<StoreDto>.Fail(validationResult.Errors);
         }
 
         var company = await _companyRepository.GetByIdAsync(createStoreDto.CompanyId);
         if (company == null)
         {
+            _logger.LogWarning("Company not found with ID: {CompanyId}", createStoreDto.CompanyId);
             return Result<StoreDto>.Fail("Company not found", HttpStatusCode.BadRequest);
         }
 
@@ -58,20 +66,33 @@ public class StoreService : IStoreService
             CompanyId = createStoreDto.CompanyId
         };
 
-        await _storeRepository.AddAsync(store);
-        await _unitOfWork.CommitAsync(CancellationToken.None);
-        return Result<StoreDto>.Successful(MapToDto(store, company), "Store created successfully");
+        try
+        {
+            await _storeRepository.AddAsync(store);
+            await _unitOfWork.CommitAsync(CancellationToken.None);
+            _logger.LogInformation("Store created successfully with ID: {StoreId}", store.Id);
+            return Result<StoreDto>.Successful(MapToDto(store, company), "Store created successfully");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error creating store with name: {StoreName}", createStoreDto.Name);
+            throw;
+        }
     }
 
     public async Task<Result<StoreDto>> GetByIdAsync(Guid id)
     {
+        _logger.LogInformation("Getting store by ID: {StoreId}", id);
+        
         var store = await _storeRepository.GetByIdAsync(id);
         if (store == null)
         {
+            _logger.LogWarning("Store not found with ID: {StoreId}", id);
             return Result<StoreDto>.Fail("Store not found", HttpStatusCode.NotFound);
         }
 
         var company = await _companyRepository.GetByIdAsync(store.CompanyId);
+        _logger.LogInformation("Store retrieved successfully with ID: {StoreId}", id);
         return Result<StoreDto>.Successful(MapToDto(store, company), "Store retrieved successfully");
     }
 
