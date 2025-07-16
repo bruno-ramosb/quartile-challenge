@@ -56,19 +56,19 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1EC5E02EBDEB44A3A8784BFCB418D752 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F04BFA288A8F4B39A7FC364751E3F6B0 }}
 
-      - name: Deploy to Azure Web App
-        id: deploy-to-webapp
+      - name: Deploy to Staging Slot
+        id: deploy-to-staging
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'quartile-api-prod'
-          slot-name: 'Production'
+          slot-name: 'staging'
           package: .
           
-      - name: Configure Azure Web App Settings
+      - name: Configure Staging Slot Settings
         uses: azure/appservice-settings@v1
         with:
           app-name: 'quartile-api-prod'
-          slot-name: 'Production'
+          slot-name: 'staging'
           app-settings-json: |
             [
               {
@@ -77,4 +77,10 @@ jobs:
                 "slotSetting": false
               }
             ]
+            
+      - name: Wait for Staging to be ready
+        run: Start-Sleep -Seconds 30
+          
+      - name: Swap Staging to Production
+        run: az webapp deployment slot swap --name quartile-api-prod --resource-group quartile-grupo --slot staging --target-slot production --preserve-vnet
           
