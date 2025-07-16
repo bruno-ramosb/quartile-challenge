@@ -55,7 +55,7 @@ namespace Quartile.Application.Features.Company.Handlers
                     company.UpdatedAt);
 
                 _logger.LogInformation("Company created successfully with ID: {CompanyId}", company.Id);
-                return Result<CompanyDto>.Successful(companyDto, "Company created successfully");
+                return Result<CompanyDto>.Successful(companyDto, "Company created successfully",HttpStatusCode.Created);
             }
             catch (Exception ex)
             {

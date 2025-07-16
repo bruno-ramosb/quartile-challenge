@@ -37,7 +37,7 @@ namespace Quartile.Infrastructure
             var context = scope.ServiceProvider.GetRequiredService<QuartileContext>();
             try
             {
-                await context.Database.EnsureCreatedAsync();
+                await context.Database.MigrateAsync();
                 await context.CreateProductFunctionsAsync();
             }
             catch { 

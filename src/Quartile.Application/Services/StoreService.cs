@@ -71,7 +71,7 @@ public class StoreService : IStoreService
             await _storeRepository.AddAsync(store);
             await _unitOfWork.CommitAsync(CancellationToken.None);
             _logger.LogInformation("Store created successfully with ID: {StoreId}", store.Id);
-            return Result<StoreDto>.Successful(MapToDto(store, company), "Store created successfully");
+            return Result<StoreDto>.Successful(MapToDto(store, company), "Store created successfully", HttpStatusCode.Created);
         }
         catch (Exception ex)
         {
@@ -154,7 +154,7 @@ public class StoreService : IStoreService
 
         await _storeRepository.RemoveAsync(existingStore);
         await _unitOfWork.CommitAsync(CancellationToken.None);
-        return Result<bool>.Successful(true, "Store deleted successfully");
+        return Result<bool>.NoContent();
     }
 
     private static StoreDto MapToDto(Store store, Company? company = null)

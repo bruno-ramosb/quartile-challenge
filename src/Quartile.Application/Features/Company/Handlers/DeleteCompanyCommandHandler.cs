@@ -29,7 +29,7 @@ namespace Quartile.Application.Features.Company.Handlers
             await _companyRepository.RemoveAsync(company);
             await _unitOfWork.CommitAsync(cancellationToken);
 
-            return Result<bool>.Successful(true, "Company deleted successfully");
+            return Result<bool>.NoContent();
         }
     }
 } 

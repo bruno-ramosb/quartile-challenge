@@ -20,10 +20,22 @@ namespace Quartile.Application.Common.Response
             StatusCode = statusCode;
         }
 
+        protected internal Result(HttpStatusCode statusCode)
+        {
+            StatusCode = statusCode;
+        }
+
 
         public static Result<T> Successful(T data, string message = Messages.SUCCESSFUL_OPERATION, HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             var result =  new Result<T>(data,message, statusCode);
+            result.Success = true;
+            return result;
+        }
+
+        public static Result<T> NoContent( HttpStatusCode statusCode = HttpStatusCode.NoContent)
+        {
+            var result = new Result<T>(statusCode);
             result.Success = true;
             return result;
         }
